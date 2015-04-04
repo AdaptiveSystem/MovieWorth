@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.adaptive_final;
+package com.movie.worth.util;
 
 
   
@@ -16,17 +16,17 @@ import java.sql.PreparedStatement;
   
   public class Dbmanage {
      public Connection initDB() {
-         // 初始化数据库连接方法
+         // 鍒濆鍖栨暟鎹簱杩炴帴鏂规硶
          Connection conn = null;
-         // 创建一个Connection句柄
+         // 鍒涘缓涓�釜Connection鍙ユ焺
          try {
              Class.forName("com.mysql.jdbc.Driver");
-             // 加载数据库驱动
+             // 鍔犺浇鏁版嵁搴撻┍鍔�
              String url = "jdbc:mysql://localhost:8889/movielens";
-             // 定义数据库地址url，并设置编码格式
+             // 瀹氫箟鏁版嵁搴撳湴鍧�rl锛屽苟璁剧疆缂栫爜鏍煎紡
              conn = DriverManager.getConnection(url, "root", "root");
              System.out.println("Connection is succeed!!");
-             // 得到数据连接
+             // 寰楀埌鏁版嵁杩炴帴
          } catch (ClassNotFoundException e) {
  
              e.printStackTrace();
@@ -35,11 +35,11 @@ import java.sql.PreparedStatement;
              e.printStackTrace();
          }
          return conn;
-         // 返回数据库连接
+         // 杩斿洖鏁版嵁搴撹繛鎺�
      }
  
      public void closeDB(Statement sta, Connection conn) {
-         // 关闭数据库连接（无结果集）
+         // 鍏抽棴鏁版嵁搴撹繛鎺ワ紙鏃犵粨鏋滈泦锛�
          try {
              sta.close();
              conn.close();
@@ -50,7 +50,7 @@ import java.sql.PreparedStatement;
  
      }
      public void closeDB(ResultSet rs, Statement sta, Connection conn) {
-         // 关闭数据库连接（有结果集）
+         // 鍏抽棴鏁版嵁搴撹繛鎺ワ紙鏈夌粨鏋滈泦锛�
          try {
              rs.close();
              sta.close();
@@ -63,7 +63,7 @@ import java.sql.PreparedStatement;
      }
      
      public void closeDB(PreparedStatement stm, Connection conn) {
-         // 关闭数据库连接（有结果集）
+         // 鍏抽棴鏁版嵁搴撹繛鎺ワ紙鏈夌粨鏋滈泦锛�
          try {
              
              stm.close();

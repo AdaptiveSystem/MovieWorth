@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.adaptive_final;
+package com.movie.worth.util;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  *
@@ -27,8 +27,8 @@ public class KNN {
 //        HashMap<Integer, Integer> CurrUser = null;
         CurrUser = getCurrUser(userid);
 
-        HashMap<Integer, Map<Integer, Integer>> RelateUser = new HashMap<>();
-        HashMap<Integer, Integer> MovieAvg = new HashMap<>();
+        HashMap<Integer, Map<Integer, Integer>> RelateUser = new HashMap<Integer, Map<Integer,Integer>>();
+        HashMap<Integer, Integer> MovieAvg = new HashMap<Integer, Integer>();
 
         Iterator iter_curruser = CurrUser.entrySet().iterator();
         int relateuser_size = CurrUser.size();
@@ -40,7 +40,7 @@ public class KNN {
             MovieAvg.put(movieid, avg);
         }
 
-        HashMap<Integer, Double> UserSimilarity = new HashMap<>();// the result of this method
+        HashMap<Integer, Double> UserSimilarity = new HashMap<Integer, Double>();// the result of this method
 
         Iterator iter_relateuser = RelateUser.entrySet().iterator();
         while (iter_relateuser.hasNext()) {
@@ -55,7 +55,7 @@ public class KNN {
 
     //get the target user's profile
     public static HashMap<Integer, Integer> getCurrUser(int userid) {
-        HashMap<Integer, Integer> UserRating = new HashMap<>();
+        HashMap<Integer, Integer> UserRating = new HashMap<Integer, Integer>();
 
         Connection conn = null;
         Statement sta = null;
@@ -98,7 +98,7 @@ public class KNN {
                     hashrating.put(movieid, rating);
 
                 } else {
-                    hashrating = new HashMap<>();
+                    hashrating = new HashMap<Integer, Integer>();
                     hashrating.put(movieid, rating);
                 }
                 tempRating = tempRating + rating;
@@ -118,7 +118,7 @@ public class KNN {
         double down1 = 0;
         double down2 = 0;
 
-        Iterator iter_relateuser = relateuser.entrySet().iterator();
+        Iterator<Entry<Integer, Integer>> iter_relateuser = relateuser.entrySet().iterator();
         while (iter_relateuser.hasNext()) {
             Map.Entry entry = (Map.Entry) iter_relateuser.next();
             int movie = (Integer) entry.getKey();
