@@ -1,7 +1,11 @@
 package com.movie.worth.controller;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +19,12 @@ import com.movie.worth.util.Rating;
 
 @Controller
 public class Test {
-	//@Autowired
-	//private SimilarityCalc scdao;
+	@Autowired
+	private SimilarityCalc scdao;
 	@Autowired
 	private AdjustedSimilarity as;
+
 	
-	/*
 	@RequestMapping(value = { "/test/sim1" }, method = RequestMethod.GET)
 	public ModelAndView sim1(){
 		ModelAndView modelAndView = new ModelAndView();
@@ -37,12 +41,15 @@ public class Test {
 		scdao.getRatingsOfOneMovie(2);
 		return modelAndView;
 	}
-	*/
 	
 	@RequestMapping(value = { "/test/simall" }, method = RequestMethod.GET)
 	public ModelAndView simall(){
 		ModelAndView modelAndView = new ModelAndView();
-		as.newUser(3);
+		HashMap<Integer, Double> simUsers = as.newUser(3);
+		Set<Integer> keySet = simUsers.keySet();
+		for(Integer key : keySet){
+			System.out.println("uid = " + key + " and similarity is = " + simUsers.get(key));
+		}
 		return modelAndView;
 	}
 }

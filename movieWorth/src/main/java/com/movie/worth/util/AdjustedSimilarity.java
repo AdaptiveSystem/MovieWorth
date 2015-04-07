@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.movie.worth.util;
 
 import java.util.HashMap;
@@ -12,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.movie.worth.dao.SimilarityCalc;
 
@@ -21,16 +16,16 @@ import com.movie.worth.dao.SimilarityCalc;
  * @author lanzhang_mini
  * 
  */
-@Repository
+@Component
 public class AdjustedSimilarity {
 	
 	@Autowired
 	private SimilarityCalc scCalcDAO;
 	
     private int tempRating;
-    private static HashMap<Integer, Integer> CurrUser = null;
+    private HashMap<Integer, Integer> CurrUser = null;
 
-    public void newUser(int userid) {
+    public HashMap<Integer, Double> newUser(int userid) {
     	//HashMap<Integer, Integer> CurrUser = null;
         CurrUser = getCurrUser(userid);
 
@@ -62,6 +57,7 @@ public class AdjustedSimilarity {
             UserSimilarity.put(userid_relate, similarity);
         }
 
+        return UserSimilarity;
     }
 
     //get the target user's profile
@@ -94,7 +90,7 @@ public class AdjustedSimilarity {
         return relateUser;
     }
 
-    public static double CalSimilarity(Map<Integer, Integer> relateuser, HashMap<Integer, Integer> Average) {
+    public double CalSimilarity(Map<Integer, Integer> relateuser, HashMap<Integer, Integer> Average) {
 
         double sim = 0;
         double up = 0;
