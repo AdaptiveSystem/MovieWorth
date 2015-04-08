@@ -19,9 +19,10 @@ import com.movie.worth.dao.SimilarityCalc;
 @Component
 public class AdjustedSimilarity {
 	
-	@Autowired
+	@Autowired//dao 处理所有与数据库有关内容
 	private SimilarityCalc scCalcDAO;
 	
+    private int tempAvgRating;
     private int tempRating;
     private HashMap<Integer, Integer> CurrUser = null;
 
@@ -33,13 +34,13 @@ public class AdjustedSimilarity {
         HashMap<Integer, Integer> MovieAvg = new HashMap<Integer, Integer>();
 
         Iterator<?> iter_curruser = CurrUser.entrySet().iterator();
-        int relateuser_size = CurrUser.size();
+//        int relateuser_size = CurrUser.size();
         while (iter_curruser.hasNext()) {
             @SuppressWarnings("rawtypes")
 			Map.Entry entry = (Map.Entry) iter_curruser.next();
             int movieid = (Integer) entry.getKey();
             RelateUser = getRelateUser(RelateUser, movieid);
-            int avg = tempRating / relateuser_size;
+            int avg = tempAvgRating;
             MovieAvg.put(movieid, avg);
         }
 
@@ -74,6 +75,7 @@ public class AdjustedSimilarity {
     		Map<Integer, Integer>> relateUser, Integer Movieid) {
     	//HashMap<Integer, Map<Integer, Integer>> relateUser = new HashMap<>();
         tempRating = 0;
+        tempAvgRating = 0;
         HashSet<Rating> ratings = scCalcDAO.getRatingsOfOneMovie(Movieid);
         for(Rating rating : ratings){
         	Map<Integer, Integer> hashrating = null;
@@ -87,6 +89,7 @@ public class AdjustedSimilarity {
             tempRating = tempRating + rating.getRating();
             relateUser.put(rating.getuId(), hashrating);
         }
+        tempAvgRating = tempRating / ratings.size();
         return relateUser;
     }
 
