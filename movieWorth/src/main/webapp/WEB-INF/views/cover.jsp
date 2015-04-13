@@ -11,7 +11,7 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<!-- Global Stylesheet -->
-	<link rel="stylesheet" href="${baseURL}/resources/css/global.css">
+	<link rel="stylesheet" href="${baseURL}/resources/css/cover.css">
 	<style>
 		body{
 			background-image: url('${baseURL}/resources/images/cover_bg.jpg');

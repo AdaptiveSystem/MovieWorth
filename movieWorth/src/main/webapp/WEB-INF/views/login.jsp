@@ -4,6 +4,7 @@
 <html>
 <head>
 	<title>Worth</title>
+	<script><c:if test="${not empty goback}">${goback}</c:if></script>
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<!-- Latest compiled and minified CSS -->
@@ -19,26 +20,48 @@
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand brand" href="${baseURL}/">Worth</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="${baseURL}/index">Home</a></li>
-          	<li><a href="${baseURL}/features">Features</a></li>
+            <li><a href="${baseURL}/features">Features</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="${baseURL}/profile">${pageContext.request.userPrincipal.name}</a></li>
-			<li><a href="<c:url value='/j_spring_security_logout'/>">Sign Out</a></li>
+			<li class="active"><a href="#">Sign In</a></li>
           </ul>
         </div>
       </div>
     </nav>
     <div class="container">
-		<p>contains</p>
+	<div class="row">
+		<div class="col-md-4">
+			<form class="form-signin" action="<c:url value='/j_spring_security_check'/>" method="POST">
+		        <h2 class="form-signin-heading">Please sign in</h2>
+		        <c:if test="${not empty error}">
+					<div class="alert alert-warning" role="alert">${error}</div>
+				</c:if>
+				<c:if test="${not empty msg}">
+					<div class="alert alert-info" role="alert">${msg}</div>
+				</c:if>
+		        <label for="inputUsername" class="sr-only">Username</label>
+		        <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
+		        <label for="inputPassword" class="sr-only">Password</label>
+		        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+		        <br>
+		        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  		    </form>
+		</div>
+		<div class="col-md-8">
+			<h2>Not a member?</h2>
+		</div>
+	</div>
     </div>
+    
+	<footer class="footer">
+      <div class="container">
+        <p class="text-muted">Team member: Fei H, Ran D, Lan Z, Yue Z</p>
+      </div>
+    </footer>
 </body>
 </html>
