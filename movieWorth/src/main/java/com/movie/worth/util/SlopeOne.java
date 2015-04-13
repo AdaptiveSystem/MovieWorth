@@ -3,6 +3,7 @@ package com.movie.worth.util;
 import java.util.Map.Entry;
 import java.util.*;
 
+import jdk.nashorn.internal.ir.WhileNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class SlopeOne {
 
     private int maxItemsId = 0;
     private int maxItem = 0;
-    private int targetUser;
+    private int targetUser=900;
     private float mteste[][];
     private float mFreq1[][];
     private int mFreq[][];
@@ -24,6 +25,7 @@ public class SlopeOne {
     private Map<Integer, Map<Integer, Float>> usersMatrix = new HashMap<Integer, Map<Integer,Float>>();
     private Map<Integer, Float> user = new HashMap<Integer, Float>();
     private HashMap<Integer, Float> predictions = new HashMap<Integer, Float>();
+    private int[] slopeoneresult;
 
     private int userid[] = {3, 47, 103, 100, 134, 171, 220, 248, 712, 771, 49, 9, 876, 761};
 
@@ -176,10 +178,31 @@ public class SlopeOne {
         List<Map.Entry> lists = new ArrayList<Map.Entry>(predictions.entrySet());
         java.util.Collections.sort(lists, new FloatEntryComparator());
 
-        System.out.println("\n" + "#### Predictions Here #### ");
+
+        slopeoneresult = new int[5];
+        int q = 0;
+        //System.out.println("\n" + "#### Predictions Here #### ");
         for (Map.Entry<Integer, Float> entry : lists) {
-            System.out.println(entry.getKey().toString() + " : " + predictions.get(entry.getKey()).floatValue());
+            while(q<5){
+                if(predictions.get(entry.getKey()).floatValue()!=Float.NaN){
+                    slopeoneresult[q]=entry.getKey();
+                    q++;
+                }
+            }
+            //System.out.println(entry.getKey().toString() + " : " + predictions.get(entry.getKey()).floatValue());
         }
 
+    }
+
+    public void settargetUser(int targetUser) {
+        this.targetUser = targetUser;
+    }
+
+    public void setuserid(int[] userid) {
+        this.userid=userid;
+    }
+
+    public int[] getslopeoneresult () {
+        return slopeoneresult;
     }
 }
