@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.movie.worth.dao.SimilarityCalc;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /*
  *
@@ -25,7 +29,22 @@ public class AdjustedSimilarity {
     private int tempAvgRating;
     private int tempRating;
     private HashMap<Integer, Integer> CurrUser = null;
+    private int[] SimUserId=null;
 
+    public AdjustedSimilarity(int userid){
+        HashMap<Integer, Double> UserSimilarity=newUser(userid);
+    }
+
+    public int[] getSimUserId() {
+        return SimUserId;
+    }
+
+    public void setSimUserId(int[] SimUserId) {
+        this.SimUserId = SimUserId;
+    }
+    
+    
+    
     public HashMap<Integer, Double> newUser(int userid) {
     	//HashMap<Integer, Integer> CurrUser = null;
         CurrUser = getCurrUser(userid);
@@ -58,6 +77,35 @@ public class AdjustedSimilarity {
             UserSimilarity.put(userid_relate, similarity);
         }
 
+        List<Map.Entry<Integer, Double>> mappingList = null;
+        //Using ArrayList to turn map.entrySet() to list. 
+        mappingList = new ArrayList<>(UserSimilarity.entrySet());
+        //Using comparator to get the sorted keyset.
+        Collections.sort(mappingList, new Comparator<Map.Entry<Integer, Double>>() {
+            public int compare(Map.Entry<Integer, Double> mapping1, Map.Entry<Integer, Double> mapping2) {
+                return mapping2.getValue().compareTo(mapping1.getValue());
+            }
+        });
+
+        ArrayList<Integer> tempID = null;
+        tempID = new ArrayList<>();
+            for (Entry<Integer, Double> mappingList1 : mappingList) {
+//            System.out.println("uid = " + mappingList.get(k).getKey() + " and similarity is = " + mappingList.get(k).getValue());
+                if (!mappingList1.getKey().equals(userid)) {
+                    if (mappingList1.getValue() >= 0.5) {
+                        tempID.add(mappingList1.getKey());
+                        System.out.println("uid = " + mappingList1.getKey() + " and similarity is = " + mappingList1.getValue());
+                    }
+                }
+            }
+        
+        if(tempID.size()>0){
+            SimUserId=new int[tempID.size()];
+            for(int q=0;q<tempID.size();q++){
+                SimUserId[q]=tempID.get(q);
+            }
+        }
+        
         return UserSimilarity;
     }
 
