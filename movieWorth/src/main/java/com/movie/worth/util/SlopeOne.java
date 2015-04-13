@@ -1,11 +1,6 @@
 package com.movie.worth.util;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
-
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +11,7 @@ import com.movie.worth.dao.SimilarityCalc;
 @Component
 public class SlopeOne {
 
-    @Autowired//dao 处理所有与数据库有关内容
+    @Autowired
     private SimilarityCalc scCalcDAO;
 
     private int maxItemsId = 0;
@@ -26,18 +21,13 @@ public class SlopeOne {
     private float mFreq1[][];
     private int mFreq[][];
     private float mDiff[][];
-    private Map<Integer, Map<Integer, Float>> usersMatrix;
+    private Map<Integer, Map<Integer, Float>> usersMatrix = new HashMap<Integer, Map<Integer,Float>>();
     private Map<Integer, Float> user = new HashMap<Integer, Float>();
     private HashMap<Integer, Float> predictions = new HashMap<Integer, Float>();
 
     private int userid[] = {3, 47, 103, 100, 134, 171, 220, 248, 712, 771, 49, 9, 876, 761};
 
-    public static void main(String args[]) {
-
-        SlopeOne so = new SlopeOne();
-    }
-
-    public SlopeOne() {
+    public void startSlopeOne() {
 
         readInput();
         buildDiffMatrix();
@@ -138,10 +128,9 @@ public class SlopeOne {
         }
     }
 
-    class FloatEntryComparator implements Comparator<Map.Entry> {
-
-        public int compare(Map.Entry e1, Map.Entry e2) {
-            return ((Float) e2.getValue()).intValue() - ((Float) e1.getValue()).intValue();
+    class FloatEntryComparator implements Comparator<Map.Entry>{
+    	public int compare(Map.Entry e1, Map.Entry e2) {
+            return Float.compare((Float) e2.getValue(), (Float) e1.getValue());
         }
     }
 
