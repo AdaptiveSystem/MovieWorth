@@ -11,7 +11,14 @@
 		<property name="password" value="123456" />
 	</bean>
 	
-	<bean id="SimilarityCalc" class="com.movie.worth.dao.SimilarityCalc">
+	<bean id="SimilarityCalc" class="com.movie.worth.dao.Ratings">
 		<property name="dataSource" ref="lensDB" />
 	</bean>
+	<bean id="UserManipulation" class="com.movie.worth.dao.Users">
+		<property name="dataSource" ref="lensDB" />
+	</bean>
+	<bean id="MovieManipulation" class="com.movie.worth.dao.Movies">
+		<property name="dataSource" ref="lensDB" />
+	</bean>
+	
 </beans>

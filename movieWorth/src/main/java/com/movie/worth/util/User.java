@@ -5,7 +5,7 @@ public class User {
 	private int uid;
 	private String username;
 	private String password;
-	private char gender;
+	private String gender;
 	private int age;
 	private int zipcode;
 	private String occupation;
@@ -28,10 +28,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public char getGender() {
+	public String getGender() {
 		return gender;
 	}
-	public void setGender(char gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 	public int getAge() {

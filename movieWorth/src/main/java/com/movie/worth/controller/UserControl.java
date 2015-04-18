@@ -2,6 +2,7 @@ package com.movie.worth.controller;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.movie.worth.service.UserService;
 import com.movie.worth.util.User;
 
 @Controller
 public class UserControl {
+	
+	@Autowired
+	private UserService us;
 	
 	//method to show the login page
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
@@ -38,14 +43,23 @@ public class UserControl {
 	@RequestMapping(value = { "/reg" }, method = RequestMethod.GET)
 	public ModelAndView regPage(){
 		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(!(auth instanceof AnonymousAuthenticationToken))
+			modelAndView.setViewName("index");
+		List<String> occups = us.getOccupations();
+		modelAndView.addObject("occupations", occups);
 		modelAndView.setViewName("reg");
 		return modelAndView;
 	}
 	
 	//method to register new user
 	@RequestMapping(value = { "/reg" }, method = RequestMethod.POST)
-	public @ResponseBody Hashtable<String, String> doReg(@RequestBody User newComer){
-		Hashtable<String, String> rs = new Hashtable<String, String>();
+	public @ResponseBody Hashtable<String, Boolean> doReg(@RequestBody User newComer){
+		Hashtable<String, Boolean> rs = new Hashtable<String, Boolean>();
+		if(us.register(newComer))
+			rs.put("status", true);
+		else
+			rs.put("status", false);
 		return rs;
 	}
 }

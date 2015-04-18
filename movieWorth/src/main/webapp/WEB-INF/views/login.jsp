@@ -3,7 +3,7 @@
 <c:set var="baseURL" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-	<title>Worth</title>
+	<title>Worth - Sign In</title>
 	<script><c:if test="${not empty goback}">${goback}</c:if></script>
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -33,7 +33,7 @@
         </div>
       </div>
     </nav>
-    <div class="container">
+    <div class="mainContent container">
 	<div class="row">
 		<div class="col-md-4">
 			<form class="form-signin" action="<c:url value='/j_spring_security_check'/>" method="POST">
@@ -54,6 +54,7 @@
 		</div>
 		<div class="col-md-8">
 			<h2>Not a member?</h2>
+			<p>Just <a href="${baseURL}/reg">register</a> now and get a movie worth watching tonight.</p>
 		</div>
 	</div>
     </div>

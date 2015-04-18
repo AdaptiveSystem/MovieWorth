@@ -4,7 +4,7 @@ public class Rating {
 	private int uId;
 	private int itemId;
 	private int rating;
-	private int timeStamp;
+	private Long timeStamp;
 	
 	public int getuId() {
 		return uId;
@@ -24,10 +24,10 @@ public class Rating {
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-	public int getTimeStamp() {
+	public Long getTimeStamp() {
 		return timeStamp;
 	}
-	public void setTimeStamp(int timeStamp) {
+	public void setTimeStamp(Long timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 	

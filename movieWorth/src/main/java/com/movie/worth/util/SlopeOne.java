@@ -1,23 +1,21 @@
 package com.movie.worth.util;
 
-import java.util.Map.Entry;
 import java.util.*;
 
-import jdk.nashorn.internal.ir.WhileNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.movie.worth.dao.SimilarityCalc;
+import com.movie.worth.dao.Ratings;
 
-@Component
+@Service
 public class SlopeOne {
 
     @Autowired
-    private SimilarityCalc scCalcDAO;
+    private Ratings scCalcDAO;
 
     private int maxItemsId = 0;
     private int maxItem = 0;
-    private int targetUser=900;
+    private int targetUser; //=900;
     private float mteste[][];
     private float mFreq1[][];
     private int mFreq[][];
@@ -27,9 +25,12 @@ public class SlopeOne {
     private HashMap<Integer, Float> predictions = new HashMap<Integer, Float>();
     private int[] slopeoneresult;
 
-    private int userid[] = {3, 47, 103, 100, 134, 171, 220, 248, 712, 771, 49, 9, 876, 761};
+    private int userid[]; //= {3, 47, 103, 100, 134, 171, 220, 248, 712, 771, 49, 9, 876, 761};
 
-    public void startSlopeOne() {
+    public int[] startSlopeOne(int targetUser,int[] userid) {
+
+        this.targetUser = targetUser;
+        this.userid = userid;
 
         readInput();
         buildDiffMatrix();
@@ -53,6 +54,7 @@ public class SlopeOne {
             }
         }
         Predict();
+        return slopeoneresult;
 
     }
 
@@ -183,13 +185,13 @@ public class SlopeOne {
         int q = 0;
         //System.out.println("\n" + "#### Predictions Here #### ");
         for (Map.Entry<Integer, Float> entry : lists) {
-            while(q<5){
-                if(predictions.get(entry.getKey()).floatValue()!=Float.NaN){
-                    slopeoneresult[q]=entry.getKey();
-                    q++;
-                }
+        	 if(!Float.isNaN(predictions.get(entry.getKey()))){
+        		 slopeoneresult[q] = entry.getKey();
+        		 q++;
             }
-            //System.out.println(entry.getKey().toString() + " : " + predictions.get(entry.getKey()).floatValue());
+        	 if(q>=5)
+        		 break;
+        //System.out.println(entry.getKey().toString() + " : " + predictions.get(entry.getKey()).floatValue());
         }
 
     }
