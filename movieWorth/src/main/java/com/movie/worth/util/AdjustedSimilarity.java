@@ -30,12 +30,15 @@ public class AdjustedSimilarity {
 	
 	private static final double SIM_THRESHOLD = 0.2;
 	private static final int SIM_NO = 10;
-    private int tempAvgRating;
-    private int tempRating;
+    private int tempAvgRating=0;
+    private int tempRating=0;
     private HashMap<Integer, Integer> CurrUser = null;
     private int[] SimUserId=null;
     
     public int[] getSimUserId(int userid) {
+    	
+    	this.clear();
+    	
         ArrayList<Integer> tempID = new ArrayList<Integer>();
         for (Entry<Integer, Double> mappingList1 : this.getSimilarityOfOneUser(userid)) {
         	//System.out.println("uid = " + mappingList.get(k).getKey() + " and similarity is = " + mappingList.get(k).getValue());
@@ -165,6 +168,13 @@ public class AdjustedSimilarity {
         
         //assign a weight for the similarity value
         return sim * noHasSameMidOfRatings / CurrUser.size();
+    }
+    
+    private void clear(){
+    	this.tempAvgRating=0;
+        this.tempRating=0;
+        this.CurrUser = null;
+        this.SimUserId=null;
     }
 
 }
