@@ -20,9 +20,9 @@ public class SlopeOne {
     private float mFreq1[][];
     private int mFreq[][];
     private float mDiff[][];
-    private Map<Integer, Map<Integer, Float>> usersMatrix = new HashMap<Integer, Map<Integer,Float>>();
-    private Map<Integer, Float> user = new HashMap<Integer, Float>();
-    private HashMap<Integer, Float> predictions = new HashMap<Integer, Float>();
+    private Map<Integer, Map<Integer, Float>> usersMatrix = null;
+    private Map<Integer, Float> user = null;
+    private HashMap<Integer, Float> predictions = null;
     private int[] slopeoneresult;
 
     private int userid[]; //= {3, 47, 103, 100, 134, 171, 220, 248, 712, 771, 49, 9, 876, 761};
@@ -31,15 +31,16 @@ public class SlopeOne {
 
         this.targetUser = targetUser;
         this.userid = userid;
+        
         this.maxItemsId = 0;
         this.maxItem = 0;
-        this.mteste = null;
+        this.mteste  = null;
         this.mFreq1 = null;
         this.mFreq = null;
         this.mDiff = null;
-        this.usersMatrix = null;
-        this.user = null;
-        this.predictions = null;
+        this.usersMatrix = new HashMap<Integer, Map<Integer,Float>>();
+        this.user = new HashMap<Integer, Float>();
+        this.predictions = new HashMap<Integer, Float>();
         this.slopeoneresult = null;
 
         readInput();
@@ -75,7 +76,7 @@ public class SlopeOne {
      */
     public void readInput() {
 
-        targetUser = 900;
+        //targetUser = 900;
 
         HashSet<Rating> ratings = scCalcDAO.getRatingsOfOneUser(targetUser);
 
