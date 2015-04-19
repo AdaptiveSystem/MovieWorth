@@ -31,6 +31,16 @@ public class SlopeOne {
 
         this.targetUser = targetUser;
         this.userid = userid;
+        this.maxItemsId = 0;
+        this.maxItem = 0;
+        this.mteste = null;
+        this.mFreq1 = null;
+        this.mFreq = null;
+        this.mDiff = null;
+        this.usersMatrix = null;
+        this.user = null;
+        this.predictions = null;
+        this.slopeoneresult = null;
 
         readInput();
         buildDiffMatrix();
