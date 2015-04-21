@@ -182,10 +182,11 @@ public class SlopeOne {
             predictions.put(j, predictions.get(j).floatValue() / (totalFreq[j]));
         }
 
-        /* Fill the predictions vector with the already known rating values */
+        /* Fill the predictions vector with the already known rating values
         for (int j : user.keySet()) {
             predictions.put(j, user.get(j));
         }
+        */
 
         /* Print predictions */
         List<Map.Entry> lists = new ArrayList<Map.Entry>(predictions.entrySet());

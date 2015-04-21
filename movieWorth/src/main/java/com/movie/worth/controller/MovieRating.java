@@ -93,20 +93,16 @@ public class MovieRating {
 	}
 	
 	
-	@RequestMapping(value = { "/searh/{keyword}" }, method = RequestMethod.GET)
-	public ModelAndView searchMovie(@PathVariable("keyword") String keyword){
-		ModelAndView searchresult = new ModelAndView();
-		searchresult.setViewName("sesaccch");
-//		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		String username = userDetails.getUsername();
-		HashSet<Movie> target = ms.getSearchMovie(keyword);
-		Iterator<Movie> iterator=target.iterator();
-		while(iterator.hasNext()){
-			Movie targetmovie = iterator.next();
-			searchresult.addObject("mName", targetmovie.getTitle());
-			searchresult.addObject("mId", targetmovie.getMid());
-		}
-		
-		return searchresult;
+	@RequestMapping(value={"/search"}, method = RequestMethod.GET)
+	public ModelAndView searchPage(){
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("search");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = { "/search" }, method = RequestMethod.POST)
+	public @ResponseBody HashSet<Movie> searchMovie(@RequestBody String keyword){
+		HashSet<Movie> rs = ms.getSearchMovie(keyword);
+		return rs;
 	}
 }

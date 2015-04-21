@@ -24,9 +24,10 @@
 				<button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
 					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand brand" href="${baseURL}/">Worth</a>
 			</div>
@@ -37,9 +38,7 @@
 					<li><a href="${baseURL}/features">Features</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<!--  <li><a href="${baseURL}/profile">${pageContext.request.userPrincipal.name}</a></li>-->
-					<li><a href="<c:url value='/j_spring_security_logout'/>">Sign
-							Out</a></li>
+					<li><a href="<c:url value='/j_spring_security_logout'/>">Sign Out</a></li>
 				</ul>
 			</div>
 		</div>
