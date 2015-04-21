@@ -37,6 +37,7 @@
 					<li class="active"><a href="${baseURL}/search">Search</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="${baseURL}/profile">${pageContext.request.userPrincipal.name}</a></li>
 					<li><a href="<c:url value='/j_spring_security_logout'/>">Sign Out</a></li>
 				</ul>
 			</div>
@@ -89,7 +90,7 @@
 			};
 
 			function addSearchResult(data) {
-				$('#slist').html = "";
+				$('#slist').html("");
 				for (var i = 0; i < data.length; i++) {
 					var movie = data[i];
 					$('#slist').append(

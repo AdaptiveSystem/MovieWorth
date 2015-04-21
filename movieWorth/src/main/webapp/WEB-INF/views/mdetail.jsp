@@ -44,7 +44,7 @@
       </div>
     </nav>
     <div class="container">
-    	<h1><a href="${mURL}">${mName}</a></h1>
+    	<h1><a target="_blank" href="${mURL}">${mName}</a></h1>
 		<p>Release Date:${mDate}</p>
 		<p>
 		<c:forEach var="genre" items="${mGenre}">
