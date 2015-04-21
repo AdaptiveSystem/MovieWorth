@@ -30,7 +30,6 @@
               <nav>
                 <ul class="nav masthead-nav">
                   <li class="active"><a href="#">Cover</a></li>
-                  <li><a href="${baseURL}/features">Features</a></li>
                 </ul>
               </nav>
             </div>

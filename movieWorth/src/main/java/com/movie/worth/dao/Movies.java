@@ -61,7 +61,6 @@ public class Movies extends JdbcDaoSupport implements MovieDAO {
 	
 	public HashSet<Movie> getsearchMovies(String likename) {
 		String sql = "Select * from `movielens`.`items` Where mtitle like '%"+likename+"%' limit 10";
-		
 		List<Movie> rs = getJdbcTemplate().query(
 				sql,
 				new RowMapper<Movie>(){
@@ -76,5 +75,20 @@ public class Movies extends JdbcDaoSupport implements MovieDAO {
 		return set;
 	}
 	
-
+	public HashSet<Integer> getPopularMovies(int uid){
+		String sql = "SELECT mid, mtitle from movielens.ratings,movielens.items where uid in " +
+				"(SELECT uid from movielens.users where occupation = (SELECT occupation FROM movielens.users where uid = ?)) " +
+				"AND rating > 3 And mid = itemid And itemid Not IN (SELECT distinct itemid FROM movielens.ratings where uid = ?) " +
+				"Group by itemid Order by count(rating) desc limit 10 ";
+		List<Integer> rs = getJdbcTemplate().query(
+				sql,
+				new Object[]{uid, uid},
+				new RowMapper<Integer>(){
+					public Integer mapRow(ResultSet rs, int rowNum) throws SQLException{
+						return rs.getInt("mid");
+					}
+				});
+		HashSet<Integer> set = new HashSet<Integer>(rs);
+		return set;
+	}
 }

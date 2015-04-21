@@ -3,8 +3,7 @@
 <c:set var="baseURL" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-	<title>Worth - ${mName}</title>
-	<meta charset="UTF-8"/>
+	<title>Worth - ${pageContext.request.userPrincipal.name}</title>
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<!-- Latest compiled and minified CSS -->
@@ -13,10 +12,6 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<!-- Global Stylesheet -->
 	<link rel="stylesheet" href="${baseURL}/resources/css/global.css">
-	<!-- Star Rating -->
-	<link href="${baseURL}/resources/css/font-awesome.css" rel="stylesheet">
-	<script type="text/javascript" src="${baseURL}/resources/js/tooltip.js"></script>
-    <script type="text/javascript" src="${baseURL}/resources/js/bootstrap-rating.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
@@ -34,39 +29,65 @@
           <ul class="nav navbar-nav">
             <li><a href="${baseURL}/index">Home</a></li>
             <li><a href="${baseURL}/search">Search</a></li>
-          	<li><a href="#">${mName}</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="${baseURL}/profile">${pageContext.request.userPrincipal.name}</a></li>
+            <li class="active"><a href="${baseURL}/profile">${pageContext.request.userPrincipal.name}</a></li>
 			<li><a href="<c:url value='/j_spring_security_logout'/>">Sign Out</a></li>
           </ul>
         </div>
       </div>
     </nav>
     <div class="container">
-    	<h1><a href="${mURL}">${mName}</a></h1>
-		<p>Release Date:${mDate}</p>
-		<p>
-		<c:forEach var="genre" items="${mGenre}">
-		<span class="label label-info">${genre}</span>
-		</c:forEach>
-		</p>
-		<p>Total Rating:<c:forEach begin="1" end="${mRatingInt}" varStatus="loop"><i class='glyphicon glyphicon-star'></i></c:forEach>(${mRating})</p>
-		<p>Your Rating:<input type="hidden" class="rating" value="${myRating}"/></p>
-    	<script>
-    		$('.rating').on('change', function(){
-    			var rating = $(this).val();
-    			$.ajax({
-    		        url: "${baseURL}/rating/${mId}/"+rating,
-    		        type: "GET",
-    		    });
-			});
-    	</script>
     </div>
-    <footer class="footer">
+    <div class="mainContent container">
+		<h2>Here are some movies what you have rated:</h2>
+		<div class="row">
+			<table class="table" id="mlist">
+				<tr><th>Name</th><th>Genre</th><th>Your Rate</th></tr>
+			</table>
+		</div>
+    </div>
+   <footer class="footer">
       <div class="container">
         <p class="text-muted">Team member: Fei H, Ran D, Lan Z, Yue Z</p>
       </div>
     </footer>
+<script>
+(function(){
+	$.ajax({
+        url: "${baseURL}/history",
+        data: null,
+        type: "GET",
+        dataType : 'json',
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+        },
+        success: function(data) {
+        	console.log(data);
+        	addMovies(data, "mlist");
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+            alert(jqXHR.status + " " + jqXHR.responseText);
+        }
+    });
+
+
+	function addMovies(data, table){
+		for(var i = 0; i < data.length; i++){
+			var movie = data[i].movie,
+				genre = "";
+			for(var j = 0; j < movie.genre.length; j++){
+				genre += '<span class="label label-info">'+movie.genre[j]+'</span>';
+			}
+			var rating = "";
+			for(var k = 0; k < data[i].myRating; k++){
+				rating+="<i class='glyphicon glyphicon-star'></i>";
+			}
+			$('#'+table).append("<tr><td><a href=\"${baseURL}/movie/"+movie.mid+"\">"+movie.title+"</a></td><td>"+genre+"</td><td>"+rating+"</td></tr>");
+		}
+	}
+}());
+</script>
 </body>
 </html>

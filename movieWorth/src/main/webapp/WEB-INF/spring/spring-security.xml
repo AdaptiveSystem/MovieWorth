@@ -12,6 +12,7 @@
 		<intercept-url pattern="/index**" access="hasRole('user')" />
 		<intercept-url pattern="/movie/**" access="hasRole('user')" />
 		<intercept-url pattern="/rating/**" access="hasRole('user')" />
+		<intercept-url pattern="/profile/**" access="hasRole('user')" />
  
 		<form-login 
 		    login-page="/login" 

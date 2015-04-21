@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.movie.worth.dao.Ratings;
 import com.movie.worth.service.MovieService;
 import com.movie.worth.service.RatingService;
 import com.movie.worth.util.Movie;
 import com.movie.worth.util.MovieUserRel;
+import com.movie.worth.util.Rating;
 
 @Controller
 public class MovieRating {
@@ -92,6 +94,12 @@ public class MovieRating {
 		return ms.getSlope(username);
 	}
 	
+	@RequestMapping(value = { "/recommend/popular" }, method = RequestMethod.GET)
+	public @ResponseBody ArrayList<Movie> popular(){
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = userDetails.getUsername();
+		return ms.getPopular(username);
+	}
 	
 	@RequestMapping(value={"/search"}, method = RequestMethod.GET)
 	public ModelAndView searchPage(){
@@ -102,7 +110,32 @@ public class MovieRating {
 	
 	@RequestMapping(value = { "/search" }, method = RequestMethod.POST)
 	public @ResponseBody HashSet<Movie> searchMovie(@RequestBody String keyword){
-		HashSet<Movie> rs = ms.getSearchMovie(keyword);
+		String keywordNew = keyword.replaceAll("\"", "");
+		HashSet<Movie> rs = ms.getSearchMovie(keywordNew);
 		return rs;
+	}
+	
+	@RequestMapping(value = { "/history" }, method = RequestMethod.GET)
+	public @ResponseBody HashSet<MovieUserRel> history(){
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = userDetails.getUsername();
+		HashSet<Rating> ratings = rs.getRatings(username);
+		HashSet<MovieUserRel> info = new HashSet<MovieUserRel>();
+		int limit = 0;
+		for(Rating r : ratings){
+			info.add(ms.getMovieWithUser(r.getItemId(), username));
+			limit++;
+			if(limit > 19){
+				break;
+			}
+		}
+		return info;
+	}
+	
+	@RequestMapping(value={"/profile"}, method = RequestMethod.GET)
+	public ModelAndView profile(){
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("profile");
+		return modelAndView;
 	}
 }

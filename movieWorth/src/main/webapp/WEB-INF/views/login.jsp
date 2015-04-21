@@ -25,7 +25,6 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="${baseURL}/features">Features</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
 			<li class="active"><a href="#">Sign In</a></li>

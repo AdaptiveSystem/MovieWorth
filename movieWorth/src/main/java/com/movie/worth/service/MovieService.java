@@ -74,15 +74,21 @@ public class MovieService {
 	public ArrayList<Movie> getSlope(String username){
 		int uid = user.getUserByUsername(username).getUid();
 		int[] related = as.getSimUserId(uid);
-		/*
-		for(int j = 0; j < related.length; j++){
-			System.out.println(related[j]);
-		}
-		*/
 		int[] movieList = so.startSlopeOne(uid, related);
 		ArrayList<Movie> rs = new ArrayList<Movie>();
 		for(int i = 0; i < movieList.length; i++){
 			rs.add(getMovieById(movieList[i]));
+		}
+		return rs;
+	}
+	
+	//get popular result for a user
+	public ArrayList<Movie> getPopular(String username){
+		int uid = user.getUserByUsername(username).getUid();
+		HashSet<Integer> mids = movies.getPopularMovies(uid);
+		ArrayList<Movie> rs = new ArrayList<Movie>();
+		for(Integer mid : mids){
+			rs.add(getMovieById(mid));
 		}
 		return rs;
 	}

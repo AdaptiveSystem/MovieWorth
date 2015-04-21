@@ -1,5 +1,7 @@
 package com.movie.worth.service;
 
+import java.util.HashSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +38,10 @@ public class RatingService {
 		}else{
 			return ratings.newRating(curr);
 		}
+	}
+	
+	public HashSet<Rating> getRatings(String username){
+		int uid = users.getUserByUsername(username).getUid();
+		return ratings.getRatingsOfOneUser(uid);
 	}
 }

@@ -29,7 +29,6 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="${baseURL}/index">Home</a></li>
             <li><a href="${baseURL}/search">Search</a></li>
-          	<li><a href="${baseURL}/features">Features</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="${baseURL}/profile">${pageContext.request.userPrincipal.name}</a></li>
@@ -45,7 +44,12 @@
 				<tr><th>Name</th><th>Genre</th></tr>
 			</table>
 		</div>
-		
+		<h2>Here are some popular movies you might be interested in:</h2>
+		<div class="row">
+			<table class="table" id="plist">
+				<tr><th>Name</th><th>Genre</th></tr>
+			</table>
+		</div>
     </div>
    <footer class="footer">
       <div class="container">
@@ -65,7 +69,8 @@
         },
         success: function(data) {
         	console.log(data);
-        	addMovies(data);
+        	addMovies(data, "mlist");
+        	getPopular(data);
         },
         error : function(jqXHR, textStatus, errorThrown) {
             alert(jqXHR.status + " " + jqXHR.responseText);
@@ -73,15 +78,45 @@
     });
 
 
-	function addMovies(data){
+	function addMovies(data, table){
 		for(var i = 0; i < data.length; i++){
 			var movie = data[i],
 				genre = "";
 			for(var j = 0; j < movie.genre.length; j++){
 				genre += '<span class="label label-info">'+movie.genre[j]+'</span>';
 			}
-			$('#mlist').append("<tr><td><a href=\"${baseURL}/movie/"+movie.mid+"\">"+movie.title+"</a></td><td>"+genre+"</td></tr>");
+			$('#'+table).append("<tr><td><a href=\"${baseURL}/movie/"+movie.mid+"\">"+movie.title+"</a></td><td>"+genre+"</td></tr>");
 		}
+	}
+	
+	function getPopular(slopeList){
+		$.ajax({
+	        url: "${baseURL}/recommend/popular",
+	        data: null,
+	        type: "GET",
+	        dataType : 'json',
+	        beforeSend: function(xhr) {
+	            xhr.setRequestHeader("Accept", "application/json");
+	            xhr.setRequestHeader("Content-Type", "application/json");
+	        },
+	        success: function(data) {
+	        	var cleanList = [];
+	        	//clean the list
+	        	for(var i = 0; i < data.length; i++){
+	        		for(var j = 0; j < slopeList.length; j++){
+	        			if(slopeList[j].mid != data[i].mid){
+	        				cleanList.push(data[i]);
+	        				break;
+	        			}
+	        		}
+	        	}
+	        	console.log(cleanList);
+	        	addMovies(cleanList, "plist");
+	        },
+	        error : function(jqXHR, textStatus, errorThrown) {
+	            alert(jqXHR.status + " " + jqXHR.responseText);
+	        }
+	    });
 	}
 }());
 </script>

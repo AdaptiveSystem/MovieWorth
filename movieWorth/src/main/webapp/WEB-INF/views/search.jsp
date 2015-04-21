@@ -35,7 +35,6 @@
 				<ul class="nav navbar-nav">
 					<li><a href="${baseURL}/index">Home</a></li>
 					<li class="active"><a href="${baseURL}/search">Search</a></li>
-					<li><a href="${baseURL}/features">Features</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="<c:url value='/j_spring_security_logout'/>">Sign Out</a></li>
@@ -44,19 +43,12 @@
 		</div>
 	</nav>
 	<div class="mainContent container">
-		<form class="form-signin"
-			action="<c:url value='/j_spring_security_check'/>" method="POST">
-			<input type="text" id="inputSearch" name="inputsearch"
-				class="form-control" placeholder="Search Movie" required autofocus>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
-		</form>
+		<div class="row searchbox">
+			<div class="col-md-10"><input type="text" id="inputSearch" class="form-control" placeholder="Movie Title" autofocus></div>
+			<div class="col-md-2"><button class="btn btn-default" id="sButton">Search</button></div>
+		</div>
 		<div class="row">
-			<table class="table" id="slist">
-				<tr>
-					<th>Movie id</th>
-					<th>Name</th>
-				</tr>
-			</table>
+			<table class="table" id="slist"></table>
 		</div>
 
 	</div>
@@ -67,31 +59,39 @@
 	</footer>
 	<script>
 		(function() {
-			$.ajax({
-				url : "${baseURL}/searh/{keyword}",
-				data : null,
-				type : "GET",
-				dataType : 'json',
-				beforeSend : function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success : function(data) {
-					console.log(data);
-					addSearchResult(data);
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status + " " + jqXHR.responseText);
+			$("#sButton").click(function(){
+				var keyword = $("#inputSearch").val().trim();
+				if(keyword.length<1){
+					return false;
+				}else{
+					getR(keyword);
 				}
-			})
+			});
+			
+			function getR(keyword){
+				$.ajax({
+					url : "${baseURL}/search/",
+					data : JSON.stringify(keyword),
+					type : "POST",
+					dataType : 'json',
+					beforeSend : function(xhr) {
+						xhr.setRequestHeader("Accept", "application/json");
+						xhr.setRequestHeader("Content-Type", "application/json");
+					},
+					success : function(data) {
+						console.log(data);
+						addSearchResult(data);
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status + " " + jqXHR.responseText);
+					}
+				});
+			};
 
 			function addSearchResult(data) {
+				$('#slist').html = "";
 				for (var i = 0; i < data.length; i++) {
 					var movie = data[i];
-					/* for (var j = 0; j < movie.genre.length; j++) {
-						genre += '<span class="label label-info">'
-								+ movie.genre[j] + '</span>';
-					} */
 					$('#slist').append(
 							"<tr><td><a href=\"${baseURL}/movie/"+movie.mid+"\">"
 									+ movie.title + "</a></td></tr>");
