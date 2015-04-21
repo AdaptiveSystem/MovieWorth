@@ -86,4 +86,21 @@ public class MovieService {
 		}
 		return rs;
 	}
+	
+	//get search result for a user
+	public HashSet<Movie> getSearchMovie(String keyword){
+		
+		HashSet<Movie> rs= movies.getsearchMovies(keyword);
+		/*
+		for(int j = 0; j < related.length; j++){
+			System.out.println(related[j]);
+		}
+		*/
+		
+//		ArrayList<Movie> rs = new ArrayList<Movie>();
+//		for(int i = 0; i < searched.size(); i++){
+//			rs.add(getMovieById(movieList[i]));
+//		}
+		return rs;
+	}
 }

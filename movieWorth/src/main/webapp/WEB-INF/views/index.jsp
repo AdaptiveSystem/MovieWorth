@@ -28,6 +28,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="${baseURL}/index">Home</a></li>
+            <li><a href="${baseURL}/search">Search</a></li>
           	<li><a href="${baseURL}/features">Features</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

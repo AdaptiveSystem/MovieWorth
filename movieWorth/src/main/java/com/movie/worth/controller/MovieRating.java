@@ -1,6 +1,8 @@
 package com.movie.worth.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -88,5 +90,23 @@ public class MovieRating {
 		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = userDetails.getUsername();
 		return ms.getSlope(username);
+	}
+	
+	
+	@RequestMapping(value = { "/searh/{keyword}" }, method = RequestMethod.GET)
+	public ModelAndView searchMovie(@PathVariable("keyword") String keyword){
+		ModelAndView searchresult = new ModelAndView();
+		searchresult.setViewName("sesaccch");
+//		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		String username = userDetails.getUsername();
+		HashSet<Movie> target = ms.getSearchMovie(keyword);
+		Iterator<Movie> iterator=target.iterator();
+		while(iterator.hasNext()){
+			Movie targetmovie = iterator.next();
+			searchresult.addObject("mName", targetmovie.getTitle());
+			searchresult.addObject("mId", targetmovie.getMid());
+		}
+		
+		return searchresult;
 	}
 }

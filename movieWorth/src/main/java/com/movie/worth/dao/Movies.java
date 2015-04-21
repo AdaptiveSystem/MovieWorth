@@ -3,7 +3,9 @@ package com.movie.worth.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -56,5 +58,23 @@ public class Movies extends JdbcDaoSupport implements MovieDAO {
 				});
 		return rs;
 	}
+	
+	public HashSet<Movie> getsearchMovies(String likename) {
+		String sql = "Select * from `movielens`.`items` Where mtitle like '%"+likename+"%' limit 10";
+		
+		List<Movie> rs = getJdbcTemplate().query(
+				sql,
+				new RowMapper<Movie>(){
+					public Movie mapRow(ResultSet rs, int rowNum) throws SQLException{
+				    	Movie target = new Movie();
+				    	target.setMid(rs.getInt("mid"));
+				    	target.setTitle(rs.getString("mtitle"));
+						return target;
+				    }
+				});
+		HashSet<Movie> set = new HashSet<Movie>(rs);
+		return set;
+	}
+	
 
 }
